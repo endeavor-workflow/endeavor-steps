@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>Keith Heard</Authors>
+    <Product>Endeavor</Product>
+    <Copyright>Copyright 2020</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/endeavor-workflow/endeavor-steps</PackageProjectUrl>
+    <PackageTags>Endeavor Workflow Steps</PackageTags>
+  </PropertyGroup>
+
+</Project>
