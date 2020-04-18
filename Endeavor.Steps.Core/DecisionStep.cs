@@ -1,7 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Text.Json;
-using Jint;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using Microsoft.CodeAnalysis;
+using System.Reflection;
+using System.Dynamic;
+using Newtonsoft.Json;
 
 namespace Endeavor.Steps.Core
 {
@@ -33,13 +38,16 @@ namespace Endeavor.Steps.Core
                 throw new NullReferenceException("This step's Condition field is Empty.");
             }
 
-            dynamic data = JsonSerializer.Deserialize<dynamic>(task.Input);
+            dynamic data = JsonConvert.DeserializeObject<dynamic>(task.Input);
 
-            bool result = new Engine()
-                .SetValue("data", data)
-                .Execute(Condition)
-                .GetCompletionValue()
-                .AsBoolean();
+            var globals = new Globals { Data = data };
+
+            var refs = new List<MetadataReference>
+            {
+                MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException).GetTypeInfo().Assembly.Location),
+                MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).GetTypeInfo().Assembly.Location)
+            };
+            bool result = CSharpScript.EvaluateAsync<bool>(Condition, options: ScriptOptions.Default.AddReferences(refs), globals: globals).GetAwaiter().GetResult();
 
             TaskResponse response = new TaskResponse
             {
@@ -49,6 +57,11 @@ namespace Endeavor.Steps.Core
             };
 
             return response;
+        }
+
+        public class Globals
+        {
+            public dynamic Data;
         }
     }
 }
