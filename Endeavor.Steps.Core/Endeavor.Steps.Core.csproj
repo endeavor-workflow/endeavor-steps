@@ -9,6 +9,7 @@
     <PackageProjectUrl>https://github.com/endeavor-workflow/endeavor-steps</PackageProjectUrl>
     <PackageTags>Endeavor Workflow Steps</PackageTags>
     <Description>Core workflow steps for the Endeavor Workflow Engine</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
